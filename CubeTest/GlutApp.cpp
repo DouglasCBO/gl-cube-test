@@ -23,7 +23,7 @@ namespace dgl
 
         glutInitWindowSize(w, h);
         glutInitWindowPosition(x, y);
-        glutInitDisplayMode(GLUT_SINGLE);
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA | GLUT_ALPHA);
         this->winID = glutCreateWindow(title.c_str());
         
         InitGL();
@@ -59,6 +59,7 @@ namespace dgl
     void GlutApp::DisplayCallback()
     {
         pSelf->Render();
+        glutSwapBuffers();
     }
 
     void GlutApp::KeyBoardCallback(unsigned char key, int x, int y)
