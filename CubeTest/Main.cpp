@@ -25,7 +25,7 @@ private:
         gluLookAt(0.0, 0.0, 15.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
         glMultMatrixf(glm::value_ptr(model));
-        glutSolidCube(5.0f);
+        DrawCube(5.0f); // glutSolidCube(5.0f);
 
         if (showAxis) {
             glDisable(GL_LIGHTING);
@@ -94,6 +94,7 @@ private:
         glLineWidth(2.0f);
     }
 
+    static void DrawCube(GLfloat s);
     static void DrawAxis(GLfloat s);
 
 private:
@@ -119,6 +120,25 @@ int main(int argc, char** argv) {
     app->Run();
 
     return 0;
+}
+
+void CubeApp::DrawCube(GLfloat s) {
+    s = s * 0.5f;
+
+    GLfloat cubeData[] = {
+        // include the vertex and normals coordinate values
+        #include "cube.dat"
+    };
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+
+    glVertexPointer(3, GL_FLOAT, 6 * sizeof(GLfloat), &cubeData[0]);
+    glNormalPointer(GL_FLOAT, 6 * sizeof(GLfloat), &cubeData[3]);
+    glDrawArrays(GL_TRIANGLES, 0, 6 * 2 * 3);
+
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void CubeApp::DrawAxis(GLfloat s) {

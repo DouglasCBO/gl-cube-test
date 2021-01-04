@@ -15,7 +15,7 @@ namespace dgl
 		// creates the application instance from a derived application class
 		template <class TApp, typename... Args>
 		static const std::unique_ptr<GlutApp>& Make(Args... args) {
-			static_assert(std::is_base_of_v<GlutApp, TApp>, "Derived doesn't implement GlutApp interface");
+			static_assert(std::is_base_of_v<GlutApp, TApp>, "TApp doesn't implement GlutApp interface");
 			if (!pSelf) {
 				pSelf.reset(new TApp(args...));
 			}
