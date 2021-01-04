@@ -64,6 +64,11 @@ private:
             case GLUT_KEY_F1:
                 showAxis = !showAxis;
                 break;
+
+            case GLUT_KEY_F2:
+                // swap shading model
+                shading = GL_FLAT + GL_SMOOTH - shading;
+                glShadeModel(shading);
         }
         Redisplay();
     }
@@ -83,6 +88,8 @@ private:
         glLightfv(GL_LIGHT0, GL_SPECULAR, lightColor);
         glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
+        // set shading model to flat
+        glShadeModel(shading);
         // increase default line width
         glLineWidth(2.0f);
     }
@@ -90,7 +97,7 @@ private:
     static void DrawAxis(GLfloat s);
 
 private:
-    CubeApp() : angle(glm::radians(15.0f)), model(1.0f), showAxis(false) {
+    CubeApp() : angle(glm::radians(15.0f)), model(1.0f), shading(GL_FLAT), showAxis(false) {
         // ctor
     }
 
@@ -98,6 +105,7 @@ private:
     const GLfloat angle;
     glm::mat4 model;
     // flags
+    GLint shading;
     bool showAxis;
 
     friend class GlutApp;
