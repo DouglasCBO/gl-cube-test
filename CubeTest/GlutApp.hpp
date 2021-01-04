@@ -61,6 +61,8 @@ namespace dgl
 
 		// redraw elements
 		void Redisplay();
+		// draw xyz-axis at a given scale
+		void DrawAxis(GLfloat s);
 
 	private:
 		GLint winID;

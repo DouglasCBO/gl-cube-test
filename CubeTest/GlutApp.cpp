@@ -17,15 +17,18 @@ namespace dgl
     void GlutApp::OpenWindow(const string& title, GLint w, GLint h, GLint x, GLint y)
     {
         if (this->winID != -1) return;
-
         this->width = w;
         this->heigth = h;
 
+        // setup window size and position
         glutInitWindowSize(w, h);
         glutInitWindowPosition(x, y);
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA | GLUT_ALPHA);
+        // request double buffered rendering with depth component
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGB);
+        // create the window
         this->winID = glutCreateWindow(title.c_str());
         
+        // calls user-defined opengl initialization
         InitGL();
 
         // sets the callback functions
@@ -37,6 +40,7 @@ namespace dgl
 
     void GlutApp::CloseWindow()
     {
+        // destroy the created window and goes off the main loop
         glutDestroyWindow(this->winID);
         glutLeaveMainLoop();
         this->winID = -1;
@@ -44,11 +48,52 @@ namespace dgl
 
     void GlutApp::Run()
     {
+        // start application main loop
         glutMainLoop();
     }
 
     void GlutApp::Redisplay() {
+        // request the screen update
         glutPostRedisplay();
+    }
+
+    void GlutApp::DrawAxis(GLfloat s) {
+        glScalef(s, s, s);
+        // draws xyz axis
+        glBegin(GL_LINES);
+        glColor3ub(128, 0, 0);  // red x-axis
+        glVertex3f(-0.5f, 0.0f, 0.0f);
+        glVertex3f(+0.5f, 0.0f, 0.0f);
+
+        glColor3ub(0, 128, 0);  // green y-axis
+        glVertex3f(0.0f, -0.5f, 0.0f);
+        glVertex3f(0.0f, +0.5f, 0.0f);
+
+        glColor3ub(0, 0, 128);  // blue z-axis
+        glVertex3f(0.0f, 0.0f, -0.5f);
+        glVertex3f(0.0f, 0.0f, +0.5f);
+        glEnd();
+
+        // draw the arrowhead
+        // +z direction
+        glPushMatrix();
+        glTranslated(0.0, 0.0, 0.5);
+        glutSolidCone(0.01, 0.02, 8, 8);
+        glPopMatrix();
+        // +y direction
+        glColor3ub(0, 128, 0);
+        glPushMatrix();
+        glTranslated(0.0, 0.5, 0.0);
+        glRotated(-90, 1.0, 0.0, 0.0);
+        glutSolidCone(0.01, 0.02, 8, 8);
+        glPopMatrix();
+        // +x direction
+        glColor3ub(128, 0, 0);
+        glPushMatrix();
+        glTranslated(0.5, 0.0, 0.0);
+        glRotated(90, 0.0, 1.0, 0.0);
+        glutSolidCone(0.01, 0.02, 8, 8);
+        glPopMatrix();
     }
 
 #pragma region "Callbacks Implementation Section"
