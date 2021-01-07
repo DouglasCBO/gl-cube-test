@@ -41,9 +41,11 @@ namespace dgl
     void GlutApp::CloseWindow()
     {
         // destroy the created window and goes off the main loop
-        glutDestroyWindow(this->winID);
-        glutLeaveMainLoop();
-        this->winID = -1;
+        if (this->winID != -1) {
+            glutDestroyWindow(this->winID);
+            glutLeaveMainLoop();
+            this->winID = -1;
+        }
     }
 
     void GlutApp::Run()
